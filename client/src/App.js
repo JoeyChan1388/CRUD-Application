@@ -1,21 +1,24 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Home from './components/Home';
-import ParticipantsCreate from './components/ParticipantsCreate';
+import ManualRegistrationsCreate from './components/ManualRegistrationsCreate';
+import SelfRegistrationsCreate from './components/SelfRegistrationsCreate';
 
 function App() {
 	return (
 		<Router>
 			<div className="App">
 				<switch>
-					<Route path="/">
+					<Route path="/Home">
 						<Home />
 					</Route>
-					<Route path="/Participants/Create">
-						<ParticipantsCreate />
+					<Route path="/Registrations/Self/Create">
+						<SelfRegistrationsCreate />
+					</Route>
+					<Route path="/Registrations/Manual/Create">
+						<ManualRegistrationsCreate />
 					</Route>
 				</switch>
 			</div>

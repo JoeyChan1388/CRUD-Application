@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-const ParticipantsCreate = () => {
+const SelfRegistrationsCreate = () => {
 	const [ firstName, setFirstName ] = useState('');
 	const [ lastName, setLastName ] = useState('');
 
@@ -23,7 +23,7 @@ const ParticipantsCreate = () => {
 
 	return (
 		<div className="form">
-			<h1> Participant Entry Form </h1>
+			<h1> Self Registration Entry Form </h1>
 
 			<label>Participant's First Name:</label>
 			<input
@@ -32,6 +32,7 @@ const ParticipantsCreate = () => {
 				onChange={(e) => {
 					setFirstName(e.target.value);
 				}}
+				required
 			/>
 
 			<label>Participant's Last Name: </label>
@@ -41,6 +42,7 @@ const ParticipantsCreate = () => {
 				onChange={(e) => {
 					setLastName(e.target.value);
 				}}
+				required
 			/>
 
 			<button onClick={submitReview} type="submit">
@@ -50,4 +52,4 @@ const ParticipantsCreate = () => {
 	);
 };
 
-export default ParticipantsCreate;
+export default SelfRegistrationsCreate;
