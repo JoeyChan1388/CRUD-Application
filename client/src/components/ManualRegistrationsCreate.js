@@ -13,11 +13,11 @@ const ParticipantsCreate = () => {
 	// Submit POST Request to back end at this URL
 	const submitReview = () => {
 		console.log('Submitting:');
-		console.log(firstName);
-		console.log(lastName);
+		console.log(vehicleModel);
+		console.log(vehicleYear);
 
 		axios
-			.post('http://localhost:3001/api/insert', {
+			.post('http://localhost:3001/registrations/insert', {
 				firstName: firstName,
 				lastName: lastName,
 				shirtSize: shirtSize,
@@ -33,96 +33,101 @@ const ParticipantsCreate = () => {
 
 	return (
 		<div>
-			<h1 className="title"> Manual Registration Entry Form </h1>
-
-			<h1 className="title"> Participant Info </h1>
-			<ul className="form-style-1">
+			<h1 className="title"> Manual Registration Entry </h1>
+			<ul class="form-style-1">
 				<li>
-					<label>First Name:</label>
+					<label>
+						Full Name <span class="required">*</span>
+					</label>
 					<input
 						type="text"
 						name="firstName"
+						class="field-divided"
+						placeholder="First"
 						onChange={(e) => {
 							setFirstName(e.target.value);
 						}}
 						required
-					/>
-				</li>
-				<li>
-					<label>Last Name: </label>
+					/>{' '}
 					<input
 						type="text"
 						name="lastName"
+						class="field-divided"
+						placeholder="Last"
 						onChange={(e) => {
 							setLastName(e.target.value);
 						}}
 						required
 					/>
 				</li>
-
 				<li>
-					<label>Participant's Shirt Size: </label>
+					<label>
+						Shirt Size <span class="required">*</span>
+					</label>
 					<input
 						type="text"
 						name="shirtSize"
+						class="field-long"
 						onChange={(e) => {
 							setShirtSize(e.target.value);
 						}}
 						required
 					/>
 				</li>
-
 				<li>
-					<label>Club: </label>
+					<label>
+						Club <span class="required">*</span>
+					</label>
 					<input
 						type="text"
 						name="clubName"
+						class="field-long"
 						onChange={(e) => {
 							setClubName(e.target.value);
 						}}
 						required
 					/>
 				</li>
-			</ul>
-
-			<h2 className="title"> Vehicle Info </h2>
-			<ul className="form-style-1">
 				<li>
-					<label>Make: </label>
+					<label>
+						Car Make / Model <span class="required">*</span>
+					</label>
 					<input
 						type="text"
-						name="vehicleMake"
+						name="VehicleMake"
+						class="field-divided"
+						placeholder="Make"
 						onChange={(e) => {
 							setVehicleMake(e.target.value);
 						}}
 						required
-					/>
-				</li>
-
-				<li>
-					<label>Model: </label>
+					/>{' '}
 					<input
 						type="text"
-						name="vehicleModel"
+						name="VehicleModel"
+						class="field-divided"
+						placeholder="Model"
 						onChange={(e) => {
 							setVehicleModel(e.target.value);
 						}}
 						required
 					/>
 				</li>
-
 				<li>
-					<label>Year: </label>
+					<label>
+						Year <span class="required">*</span>
+					</label>
 					<input
 						type="number"
-						name="vehicleYear"
+						name="VehicleYear"
+						class="field-divided"
+						placeholder="Year"
 						onChange={(e) => {
 							setVehicleYear(e.target.value);
 						}}
 						required
 					/>
 				</li>
-
 				<li>
 					<button onClick={submitReview} type="submit">
 						Submit
