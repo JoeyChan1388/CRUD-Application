@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcryptjs');
 
 const dbConnection = mysql.createConnection({
 	host: 'localhost',
@@ -70,6 +71,55 @@ app.post('/registrations/insert', (req, res) => {
 					);
 				}
 			});
+		}
+	});
+});
+
+app.post('/user/create/submit', (req, res) => {
+	// Get values from front end
+	const email = req.body.email;
+
+	// Plain text password, might be bad to have this as a variable even for a second
+	var password = req.body.password;
+
+	// Salt and password hashing
+	const salt = bcrypt.genSaltSync(10);
+	password = bcrypt.hashSync(password, salt);
+
+	// Create insert into statement with placeholders
+	const sqlInsertUser = 'INSERT INTO tbl_Users(user_email, user_password) VALUES(?,?);';
+
+	// Execute sql statements with parameters
+	dbPool.query(sqlInsertUser, [ email, password ], (err, result) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(result);
+		}
+	});
+});
+
+app.post('/user/login/submit', (req, res) => {
+	// Get values from front end
+	const email = req.body.email;
+
+	// Plain text password, might be bad to have this as a variable even for a second
+	const password = req.body.password;
+	var hash = '';
+
+	// Hash should equal the user_password in the database WHERE user_email = req.body.email
+	const sqlRetrievePassword = 'SELECT user_password FROM tbl_users WHERE user_email = ?;';
+	dbPool.query(sqlRetrievePassword, [ email ], (err, result) => {
+		if (err) {
+			console.log(err);
+		} else {
+			// console.log(result[0].user_password);
+
+			// Get the hash from the query result.
+			const success = bcrypt.compareSync(password, result[0].user_password);
+			console.log(success);
+
+			// If Success then create session somehow using the email and pass
 		}
 	});
 });
