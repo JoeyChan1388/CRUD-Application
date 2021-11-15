@@ -44,7 +44,7 @@
   --bs-warning-rgb: 255, 193, 7;
   --bs-danger-rgb: 220, 53, 69;
   --bs-light-rgb: 248, 249, 250;
-  --bs-dark-rgb:252, 149, 23;
+  --bs-dark-rgb: 1, 128, 216; /* NAVBAR BACKGROUND */
   --bs-white-rgb: 255, 255, 255;
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
@@ -172,7 +172,6 @@ ol, ul {
 }
 
 dl, ol, ul {
-  margin-top: 0;
   margin-bottom: 1rem
 }
 
@@ -3831,13 +3830,13 @@ textarea.form-control-lg {
 }
 
 .nav-tabs .nav-link.disabled {
-  color: #6c757d;
+  color: #3b3f42;
   background-color: transparent;
   border-color: transparent
 }
 
 .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
-  color: #495057;
+  color: #2e3135;
   background-color: #fff;
   border-color: #dee2e6 #dee2e6 #fff
 }
@@ -3855,7 +3854,7 @@ textarea.form-control-lg {
 }
 
 .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  color: #fff;
+  color: rgb(51, 51, 51);
   background-color: #0d6efd
 }
 
@@ -3911,7 +3910,6 @@ textarea.form-control-lg {
 .navbar-nav {
   display: flex;
   flex-direction: column;
-  padding-left: 0;
   margin-bottom: 0;
   list-style: none
 }
@@ -3933,7 +3931,7 @@ textarea.form-control-lg {
 .navbar-collapse {
   flex-basis: 100%;
   flex-grow: 1;
-  align-items: center
+  align-items: center;
 }
 
 .navbar-toggler {
@@ -4033,7 +4031,7 @@ textarea.form-control-lg {
 @media (min-width:768px) {
   .navbar-expand-md {
     flex-wrap: nowrap;
-    justify-content: flex-start
+    justify-content: flex-start;
   }
   .navbar-expand-md .navbar-nav {
     flex-direction: row
@@ -4042,8 +4040,8 @@ textarea.form-control-lg {
     position: absolute
   }
   .navbar-expand-md .navbar-nav .nav-link {
-    padding-right: .5rem;
-    padding-left: .5rem
+    padding-right: 1rem;
+    padding-left: 2rem;
   }
   .navbar-expand-md .navbar-nav-scroll {
     overflow: visible
@@ -4341,11 +4339,11 @@ textarea.form-control-lg {
 }
 
 .navbar-light .navbar-text a, .navbar-light .navbar-text a:focus, .navbar-light .navbar-text a:hover {
-  color: rgba(0, 0, 0, .9)
+  color: rgba(0, 0, 0, 1)
 }
 
 .navbar-dark .navbar-brand {
-  color: #fff
+  color: rgba(0,0,0,1)
 }
 
 .navbar-dark .navbar-brand:focus, .navbar-dark .navbar-brand:hover {
@@ -4353,7 +4351,7 @@ textarea.form-control-lg {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: rgba(255, 255, 255, .55)
+  color: rgba(0, 0, 0, 0.55)
 }
 
 .navbar-dark .navbar-nav .nav-link:focus, .navbar-dark .navbar-nav .nav-link:hover {
@@ -10631,4 +10629,42 @@ select{
 
 .title{
   text-align: center;
+}
+
+body {
+  /* Transparent */
+  background: rgba(0,0,0,0);
+}
+
+html {
+  background-color:#7ba7da;
+}
+
+div.home {
+  margin-top: 12%;
+  margin-left: 125px;
+}
+
+h1.home {
+  font-size: 30px;
+  color: #1e4072;
+}
+
+h3.home {
+  color: #545c68;
+  font-size: 15px;
+}
+
+a.nav-link-title {
+  font-size: 20px;
+  color: #084298;
+  text-decoration: none;
+}
+
+li.nav-item-right {
+  margin-left: auto;
+}
+
+div.form-page {
+  margin-top: 100px;
 }

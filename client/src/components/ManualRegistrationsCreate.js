@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const ParticipantsCreate = () => {
 	const [ firstName, setFirstName ] = useState('');
@@ -10,12 +12,15 @@ const ParticipantsCreate = () => {
 	const [ vehicleModel, setVehicleModel ] = useState('');
 	const [ vehicleYear, setVehicleYear ] = useState('');
 
+	const { currentUser } = useAuth();
+	const history = useHistory();
+
+	if (!currentUser) {
+		history.push('/login');
+	}
+
 	// Submit POST Request to back end at this URL
 	const submitReview = () => {
-		console.log('Submitting:');
-		console.log(vehicleModel);
-		console.log(vehicleYear);
-
 		axios
 			.post('http://localhost:3001/registrations/insert', {
 				firstName: firstName,
@@ -32,17 +37,17 @@ const ParticipantsCreate = () => {
 	};
 
 	return (
-		<div>
+		<div className="form-page">
 			<h1 className="title"> Manual Registration Entry </h1>
-			<ul class="form-style-1">
+			<ul className="form-style-1">
 				<li>
 					<label>
-						Full Name <span class="required">*</span>
+						Full Name <span className="required">*</span>
 					</label>
 					<input
 						type="text"
 						name="firstName"
-						class="field-divided"
+						className="field-divided"
 						placeholder="First"
 						onChange={(e) => {
 							setFirstName(e.target.value);
@@ -52,7 +57,7 @@ const ParticipantsCreate = () => {
 					<input
 						type="text"
 						name="lastName"
-						class="field-divided"
+						className="field-divided"
 						placeholder="Last"
 						onChange={(e) => {
 							setLastName(e.target.value);
@@ -62,12 +67,12 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Shirt Size <span class="required">*</span>
+						Shirt Size <span className="required">*</span>
 					</label>
 					<input
 						type="text"
 						name="shirtSize"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setShirtSize(e.target.value);
 						}}
@@ -76,12 +81,12 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Club <span class="required">*</span>
+						Club <span className="required">*</span>
 					</label>
 					<input
 						type="text"
 						name="clubName"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setClubName(e.target.value);
 						}}
@@ -90,12 +95,12 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Car Make / Model <span class="required">*</span>
+						Car Make / Model <span className="required">*</span>
 					</label>
 					<input
 						type="text"
 						name="VehicleMake"
-						class="field-divided"
+						className="field-divided"
 						placeholder="Make"
 						onChange={(e) => {
 							setVehicleMake(e.target.value);
@@ -105,7 +110,7 @@ const ParticipantsCreate = () => {
 					<input
 						type="text"
 						name="VehicleModel"
-						class="field-divided"
+						className="field-divided"
 						placeholder="Model"
 						onChange={(e) => {
 							setVehicleModel(e.target.value);
@@ -115,12 +120,12 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Year <span class="required">*</span>
+						Year <span className="required">*</span>
 					</label>
 					<input
 						type="number"
 						name="VehicleYear"
-						class="field-divided"
+						className="field-divided"
 						placeholder="Year"
 						onChange={(e) => {
 							setVehicleYear(e.target.value);

@@ -1,39 +1,41 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+import {useAuth} from '../contexts/AuthContext'
 
 const Login = () => {
-	const [ email, setEmail ] = useState('');
-	const [ password, setPassword ] = useState('');
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+	const { login } = useAuth()
+	const [error, setError] = useState("")
+	const [loading, setLoading] = useState(false)
+	const history = useHistory()
 
-	// Submit POST Request to back end at this URL
-	const submitReview = () => {
-		console.log('Submitting:');
-		console.log(email);
-		console.log(password);
-
-		axios
-			.post('http://localhost:3001/user/login/submit', {
-				email: email,
-				password: password
-			})
-			.then((response) => {
-				console.log(response);
-			});
+	// On Button Click
+	async function submitReview() {
+		try {
+			setError("")
+			setLoading(true)
+			await login(email, password)
+			history.push("/")
+		  } catch {
+			setError("Failed to log in")
+		  }
+	  
+		  setLoading(false)
 	};
 
 	return (
-		<div>
+		<div className="form-page">
 			<h1 className="title"> User Login </h1>
-			<ul class="form-style-1">
+			<ul className="form-style-1">
 				<li>
 					<label>
-						Email <span classname="required">*</span>
+						Email <span className="required">*</span>
 					</label>
 					<input
 						type="email"
 						name="email"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setEmail(e.target.value);
 						}}
@@ -42,12 +44,12 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Password <span classname="required">*</span>
+						Password <span className="required">*</span>
 					</label>
 					<input
 						type="password"
 						name="password"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
@@ -55,10 +57,17 @@ const Login = () => {
 					/>
 				</li>
 				<li>
-					<button onClick={submitReview} type="submit">
+					<p> {error} </p>		
+				</li>
+				<li>
+					<button onClick={submitReview} type="submit" disabled={loading}>
 						Submit
 					</button>
 				</li>
+				<p>
+					Need an account?
+					<a href="/signup">Sign Up</a>
+				</p>
 			</ul>
 		</div>
 	);

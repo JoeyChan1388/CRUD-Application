@@ -1,38 +1,37 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login = () => {
 	const [ email, setEmail ] = useState('');
 	const [ password, setPassword ] = useState('');
+	const { signup } = useAuth();
+	const [error, setError] = useState('')
+	const [loading, setLoading] = useState('')
 
-	// Submit POST Request to back end at this URL
-	const submitReview = () => {
-		console.log('Submitting:');
-		console.log(email);
-		console.log(password);
-
-		axios
-			.post('http://localhost:3001/user/create/submit', {
-				email: email,
-				password: password
-			})
-			.then((response) => {
-				console.log(response);
-			});
+	// Signup
+	async function submitReview() {
+		try{
+			setLoading(true)
+			await signup(email, password)
+		} 
+		catch {
+			setError("Failed to make an account!")
+		}
+		setLoading(false)
 	};
 
 	return (
-		<div>
+		<div className="form-page">
 			<h1 className="title"> User Registration </h1>
-			<ul class="form-style-1">
+			<ul className="form-style-1">
 				<li>
 					<label>
-						Email <span classname="required">*</span>
+						Email <span className="required">*</span>
 					</label>
 					<input
 						type="email"
 						name="email"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setEmail(e.target.value);
 						}}
@@ -41,12 +40,12 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Password <span classname="required">*</span>
+						Password <span className="required">*</span>
 					</label>
 					<input
 						type="password"
 						name="password"
-						class="field-long"
+						className="field-long"
 						onChange={(e) => {
 							setPassword(e.target.value);
 						}}
@@ -54,10 +53,17 @@ const Login = () => {
 					/>
 				</li>
 				<li>
-					<button onClick={submitReview} type="submit">
+					<p> {error} </p>		
+				</li>
+				<li>
+					<button onClick={submitReview} type="submit" disabled={loading} >
 						Submit
 					</button>
 				</li>
+				<p> 
+					Have an account?
+					<a href="/login"> Login </a>
+				</p>
 			</ul>
 		</div>
 	);
