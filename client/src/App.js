@@ -8,7 +8,11 @@ import Login from './components/Login';
 import UsersCreate from './components/UsersCreate';
 import ManualRegistrationsCreate from './components/ManualRegistrationsCreate';
 import SelfRegistrationsCreate from './components/SelfRegistrationsCreate';
+import Donate from './components/Donate';
+import SponsorshipCreate from './components/SponsorshipCreate';
+import EventsRead from './components/EventsRead'
 import { AuthProvider } from './contexts/AuthContext';
+import EventsCreate from './components/EventsCreate';
 
 function App() {
 	return (
@@ -23,6 +27,11 @@ function App() {
 						<Route path="/signup" component={UsersCreate} />
 						<Route path="/Registrations/Manual" component={ManualRegistrationsCreate} />
 						<Route path="/Registrations/Self" component={SelfRegistrationsCreate} />
+						<Route path="/Donations/Create" component={Donate} />
+						<Route path="/Donations/Reciept" component={DonationsReciept} />
+						<Route exact path="/Sponsorships/Create" component={SponsorshipCreate} />
+						<Route exact path="/Events" component={EventsRead} />
+						<Route exact path="/Events/Create" component={EventsCreate} />
 					</Switch>
 				</div>
 			</Router>

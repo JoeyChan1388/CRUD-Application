@@ -1,39 +1,84 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const Login = () => {
-	const [ email, setEmail ] = useState('');
-	const [ password, setPassword ] = useState('');
-	const { signup } = useAuth();
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [address, setAddress] = useState('');
+	const [phoneNumber, setPhoneNumber] = useState('');
+	const [password, setPassword] = useState('');
+	const { signup, currentUser } = useAuth();
 	const [error, setError] = useState('')
 	const [loading, setLoading] = useState('')
 
 	// Signup
-	async function submitReview() {
+	function submitReview() {
 		try{
-			setLoading(true)
-			await signup(email, password)
+			setLoading(true);
+			signup(email, password);
 		} 
 		catch {
-			setError("Failed to make an account!")
+			setError("Failed to make an account!");
+		}
+		finally {
+			if (currentUser) {
+				axios.post('http://localhost:3001/users/insert', {
+					userid: currentUser.uid,
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					phoneNumber: phoneNumber,
+					address: address
+				}).then((response) => {
+					console.log(response);
+				});
+			}
 		}
 		setLoading(false)
 	};
 
 	return (
 		<div className="form-page">
-			<h1 className="title"> User Registration </h1>
+			<h1 className="title"> Sign up Here! </h1>
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Email <span className="required">*</span>
+						Full Name <span className="required">*</span>
 					</label>
 					<input
-						type="email"
-						name="email"
-						className="field-long"
+						type="text"
+						name="firstName"
+						className="field-divided"
+						placeholder="First"
 						onChange={(e) => {
-							setEmail(e.target.value);
+							setFirstName(e.target.value);
+						}}
+						required
+					/>{' '}
+					<input
+						type="text"
+						name="lastName"
+						className="field-divided"
+						placeholder="Last"
+						onChange={(e) => {
+							setLastName(e.target.value);
+						}}
+						required
+					/>
+				</li>
+				<li>
+					<label>
+						Phone Number <span className="required">*</span>
+					</label>
+					<input
+						type="text"
+						name="shirtSize"
+						className="field-long"
+						placeholder="1235467890"
+						onChange={(e) => {
+							setPhoneNumber(e.target.value);
 						}}
 						required
 					/>
@@ -53,17 +98,46 @@ const Login = () => {
 					/>
 				</li>
 				<li>
-					<p> {error} </p>		
+					<label>
+						Address <span className="required">*</span>
+					</label>
+					<input
+						type="text"
+						name="clubName"
+						className="field-long"
+						onChange={(e) => {
+							setAddress(e.target.value);
+						}}
+						required
+					/>
 				</li>
 				<li>
-					<button onClick={submitReview} type="submit" disabled={loading} >
+					<label>
+						Email <span className="required">*</span>
+					</label>
+					<input
+						type="text"
+						name="VehicleMake"
+						className="field-long"
+						placeholder="jdoe@dcmail.ca"
+						onChange={(e) => {
+							setEmail(e.target.value);
+						}}
+						required
+						/>
+				</li>
+				<li>
+					<button onClick={submitReview} disabled={loading} type="submit">
 						Submit
 					</button>
 				</li>
-				<p> 
+				<li>
+					<h3>{error}</h3>
+				</li>
+				<li>
 					Have an account?
-					<a href="/login"> Login </a>
-				</p>
+					<a href="/Login">Login</a>
+				</li>
 			</ul>
 		</div>
 	);

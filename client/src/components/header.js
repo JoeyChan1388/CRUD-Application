@@ -6,11 +6,13 @@ const Header = () => {
 	const { currentUser, logout } = useAuth();
 	const history = useHistory()
 
+	// Calls logout function from the authcontext to log the user out and forward them to login screen.
 	async function handleLogout() {
 		try {
-		  await logout()
-		  history.push("/login")
+			await logout()
+			history.push("/login")
 		} catch {
+			// Error code goes here
 		}
 	}
 
@@ -30,59 +32,70 @@ const Header = () => {
 						<span className="navbar-toggler-icon" />
 					</button>
 					<div className="collapse navbar-collapse" id="navbarCollapse">
-						<ul className="navbar-nav me-auto mb-2 mb-md-0">
-						<li className="nav-item">
-								<a className="nav-link-title" href="/">
-									Hot Rides Auto Expo
-								</a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="/Registrations/Self">
-									Self-Registration
-								</a>
-							</li>
-							{/* If currentUser exists do... */}
-							{currentUser &&
-							<li className="nav-item">
-								<a className="nav-link" href="/Registrations/Manual">
-									Manual-Registration
-								</a>
-							</li>
-							}
-							<li className="nav-item">
-								<a className="nav-link" href="/Donations/Create">
-									Donations
-								</a>
-							</li>
-							<li className="nav-item">
-								<a className="nav-link" href="/Sponsors/Create">
-									Sponsors
-								</a>
-							</li>
 
-							{/* Inline if statements for dynamic nav bar */}
-							{currentUser &&
-							<li className="nav-item">
-								<p className="nav-link"> {currentUser && currentUser.email}</p>
-							</li>
-							}
+						{currentUser &&
+							<div>
+								<ul className="navbar-nav me-auto mb-2 mb-md-0">
+									<li className="nav-item">
+										<a className="nav-link-title" href="/">
+											Hot Rides Auto Expo
+									</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/Registrations/Self">
+											Self-Registration
+									</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/Registrations/Manual">
+											Manual-Registration
+									</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/Donations/Create">
+											Donations
+									</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/Sponsorships/Create">
+											Sponsorships
+									</a>
+									</li>
+									<li className="nav-item">
+										<a className="nav-link" href="/Events">
+											Events
+									</a>
 
-							{ currentUser &&
-							<li className="nav-item-right">
-								<a className="nav-link" onClick={handleLogout} href="/login">
-									Logout
+									</li>
+									<li className="nav-item">
+										<p className="nav-link"> {currentUser && currentUser.email}</p>
+									</li>
+									<li className="nav-item-right">
+										<a className="nav-link" onClick={handleLogout} href="/login">
+											Logout
+									</a>
+									</li>
+								</ul>
+							</div>}
+
+						{!currentUser &&
+							<div>
+								<ul className="navbar-nav me-auto mb-2 mb-md-0">
+									<li className="nav-item">
+										<a className="nav-link-title" href="/">
+											Hot Rides Auto Expo
+									</a>
+									</li>
+
+									<li className="nav-item-right">
+										<a className="nav-link" href="/login">
+											Login
 								</a>
-							</li>
-							}
-							
-							{!currentUser &&
-							<li className="nav-item-right">
-								<a className="nav-link" href="/login">
-									Login
-								</a>
-							</li>
-							}
-						</ul>
+									</li>
+								</ul>
+							</div>
+						}
+
 					</div>
 				</div>
 			</nav>
