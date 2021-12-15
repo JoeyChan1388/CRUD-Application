@@ -32,10 +32,10 @@ function App() {
 						<Route path="/Registrations/Self" component={SelfRegistrationsCreate} />
 						<Route path="/Donations/Create" component={Donate} />
 						<Route path="/Donations/Reciept/:id" children={<DonationsReciept />} />
+						<Route exact path="/Events/Create" component={EventsCreate} />
 						<Route path="/Events/:id" children={<EventView />} />
 						<Route exact path="/Sponsorships/Create" component={SponsorshipCreate} />
 						<Route exact path="/Events" component={EventsRead} />
-						<Route exact path="/Events/Create" component={EventsCreate} />
 						<Route exact path="/Summary/Events" component={EventsSummary} />
 					</Switch>
 				</div>

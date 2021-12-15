@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -19,10 +19,14 @@ const SelfRegistrationsCreate = () => {
 		axios.post("http://localhost:3001/Event/get", {
 			id: id,
 		}).then((response) => {
-			console.log(response)
-			setEventFee(response.data[0].Event_Registration_Fee);
+			setEventFee((response.data[0].Event_Registration_Fee));
 		})
 	}
+
+	useEffect(() => {
+		getEventFromID(eventID)
+		document.getElementById('fee').textContent = ("Registration Fee: " + eventFee);
+	}, [eventID, eventFee])
 
 	// Grab events list on page load
 	useEffect(() => {
@@ -30,11 +34,6 @@ const SelfRegistrationsCreate = () => {
 			setEventsList(response.data)
 		})
 	}, [])
-
-	useEffect(() => {
-		getEventFromID(eventID)
-		document.getElementById('fee').textContent = ("Price: " + eventFee)
-	}, [eventID])
 
 	if (!currentUser) {
 		history.push('/login');
@@ -51,10 +50,10 @@ const SelfRegistrationsCreate = () => {
 				vehicleMake: vehicleMake,
 				vehicleModel: vehicleModel,
 				vehicleYear: vehicleYear,
-				price: eventFee
+				price: eventFee,
+				paymentType: 'ONLINE'
 			})
 			.then((response) => {
-				console.log(response);
 				history.push('/');
 			});
 	};
@@ -139,7 +138,6 @@ const SelfRegistrationsCreate = () => {
 						id="Event"
 						onChange={(e) => {
 							setEventID(e.target.value);
-							console.log(eventID)
 						}}>
 						{eventsList.map((val, key) => {
 							return (
@@ -149,7 +147,7 @@ const SelfRegistrationsCreate = () => {
 					</select>
 				</li>
 				<li>
-					<p id='fee'> Fee: {eventFee} </p>
+					<p id='fee'> Registration Fee: {eventFee} </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit">

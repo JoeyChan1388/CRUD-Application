@@ -212,10 +212,11 @@ app.post('/events/insert', (req, res) => {
 	const eventName = req.body.eventName;
 	const organizerFirstName = req.body.organizerFirstName;
 	const organizerLastName = req.body.organizerLastName;
+	const fee = req.body.price
 
-	const sqlInsertEvent = 'INSERT INTO events(Event_Address, Event_Date, Event_Name, Event_Organizer_First_Name, Event_Organizer_Last_Name) VALUES(?,?,?,?,?);';
+	const sqlInsertEvent = 'INSERT INTO events(Event_Address, Event_Date, Event_Name, Event_Organizer_First_Name, Event_Organizer_Last_Name, Event_Registration_Fee) VALUES(?,?,?,?,?,?);';
 
-	dbPool.query(sqlInsertEvent, [eventAddress, eventDate, eventName, organizerFirstName, organizerLastName], (err, result) => {
+	dbPool.query(sqlInsertEvent, [eventAddress, eventDate, eventName, organizerFirstName, organizerLastName, fee], (err, result) => {
 		if (err) {
 			console.log(err);
 		} else {
@@ -247,14 +248,15 @@ app.post('/users/insert', (req, res) => {
 	const address = req.body.address;
 
 	const sqlInsertUser =
-		'INSERT INTO users(user_id, user_first_name, user_last_name, user_email_address, user_phone_number, user_address) VALUES(?,?,?,?,?,?);';
+		'INSERT INTO users(user_id, user_first_name, user_last_name, user_phone_number, user_email_address, user_address, user_role) VALUES(?,?,?,?,?,?,?);';
 
 	// execute statements with values in list filling the placeholders
-	dbPool.query(sqlInsertUser, [userid, firstName, lastName, email, phoneNumber, address], (err, result) => {
+	dbPool.query(sqlInsertUser, [userid, firstName, lastName, phoneNumber, email, address, "User"], (err, result) => {
+		console.log('attempting insert')
 		if (err) {
 			console.log(err);
 		} else {
-			console.log('Success!');
+			console.log(result);
 		}
 	});
 });
@@ -268,7 +270,8 @@ app.post('/registrations/insert', (req, res) => {
 	const vehicleMake = req.body.vehicleMake;
 	const vehicleModel = req.body.vehicleModel;
 	const vehicleYear = req.body.vehicleYear;
-	const registrationPrice = req.body.price
+	const registrationPrice = req.body.price;
+	const paymentType = req.body.paymentType;
 
 	const userid = req.body.userid;
 	const eventid = req.body.eventid;
@@ -285,7 +288,7 @@ app.post('/registrations/insert', (req, res) => {
 			console.log(err);
 		} else {
 			// Transaction Insert
-			dbPool.query(sqlInsertTransaction, [registrationPrice, 'CASH'], (err2, result2) => {
+			dbPool.query(sqlInsertTransaction, [registrationPrice, paymentType], (err2, result2) => {
 				if (err2) {
 					console.log(err2);
 				} else {
@@ -321,7 +324,8 @@ app.post('/manualregistrations/insert', (req, res) => {
 	const vehicleModel = req.body.vehicleModel;
 	const vehicleYear = req.body.vehicleYear;
 	const eventid = req.body.eventid;
-	const registrationPrice = 50;
+	const registrationPrice = req.body.price;
+	const paymentType = req.body.paymentType;
 
 	const sqlInsertUser =
 		'INSERT INTO users(user_id, user_first_name, user_last_name, user_email_address, user_phone_number, user_address) VALUES(?,?,?,?,?,?);';
@@ -340,7 +344,7 @@ app.post('/manualregistrations/insert', (req, res) => {
 					console.log(err2);
 				} else {
 					// Transaction Insert
-					dbPool.query(sqlInsertTransaction, [registrationPrice, 'CASH'], (err3, result3) => {
+					dbPool.query(sqlInsertTransaction, [registrationPrice, paymentType], (err3, result3) => {
 						if (err3) {
 							console.log(err3);
 						} else {

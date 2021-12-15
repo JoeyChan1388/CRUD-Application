@@ -30,6 +30,7 @@ const EventsRead = () => {
 							<h4>Organizer: {val.Event_Organizer_First_Name} {val.Event_Organizer_Last_Name}</h4>
 							<h4>Address: {val.Event_Address}</h4>
 							<h4>Date: {val.Event_Date}</h4>
+							<a href={'/Events/' + val.Event_ID}> View Revenue Info </a>
 						</li>
 					)
 				})}

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useHistory } from 'react-router-dom'
 import axios from 'axios';
 
 const Login = () => {
@@ -12,29 +13,38 @@ const Login = () => {
 	const { signup, currentUser } = useAuth();
 	const [error, setError] = useState('')
 	const [loading, setLoading] = useState('')
+	const history = useHistory();
+
+	useEffect(() => {
+		try {
+			axios.post('http://localhost:3001/users/insert', {
+				userid: currentUser.uid,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				phoneNumber: phoneNumber,
+				address: address,
+			}).then((response) => {
+				console.log(response);
+			});
+		} catch (e) {
+			console.log(e);
+		} finally {
+			if (currentUser) {
+				history.push('/login')
+			}
+		}
+	}, [currentUser])
 
 	// Signup
-	function submitReview() {
+	async function submitReview() {
 		try {
 			setLoading(true);
-			signup(email, password);
+			await signup(email, password);
 		}
-		catch {
+		catch (e) {
+			console.log(e)
 			setError("Failed to make an account!");
-		}
-		finally {
-			if (currentUser) {
-				axios.post('http://localhost:3001/users/insert', {
-					userid: currentUser.uid,
-					firstName: firstName,
-					lastName: lastName,
-					email: email,
-					phoneNumber: phoneNumber,
-					address: address
-				}).then((response) => {
-					console.log(response);
-				});
-			}
 		}
 		setLoading(false)
 	};

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext'
 
 
 const EventView = () => {
@@ -8,10 +9,27 @@ const EventView = () => {
     const [eventData, setEventData] = useState([]);
     const [participantCount, setParticipantCount] = useState(0);
     const [donationCount, setDonationCount] = useState(0);
+    const { currentUser } = useAuth();
     const [sponsorshipCount, setSponsorshipCount] = useState(0);
     const [registrationAmount, setRegistrationAmount] = useState(0);
     const [donationAmount, setDonationAmount] = useState(0);
     const [sponsorshipAmount, setSponsorshipAmount] = useState(0);
+    const history = useHistory();
+
+    // Go back if not admin
+    if (currentUser) {
+        axios.post('http://localhost:3001/user/get', {
+            id: currentUser.uid,
+        }).then((response) => {
+            if (response.data[0]) {
+                if (response.data[0].User_Role !== "Admin") {
+                    history.push('/Events/');
+                }
+            }
+        })
+    } else {
+        history.goBack();
+    }
 
     // Grab events list on page load
     useEffect(() => {
@@ -55,6 +73,7 @@ const EventView = () => {
                 <h4> Revenue Generated: ${donationAmount} </h4>
                 <h3> Sponsorships: {sponsorshipCount}</h3>
                 <h4> Revenue Generated: ${sponsorshipAmount}</h4>
+                <h4> Total Revenue Generated: ${sponsorshipAmount + donationAmount + registrationAmount}</h4>
             </ul>
         </div>
     )

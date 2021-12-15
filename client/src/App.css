@@ -11813,3 +11813,8 @@ div.navbar-elements {
 tr.summary{
   margin-left: 10%;
 }
+
+button.donate-button{
+  width: 30%;
+  margin-right: 3.3%;
+}

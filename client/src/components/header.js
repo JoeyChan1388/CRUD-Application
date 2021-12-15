@@ -1,16 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios'
 
 const Header = () => {
 	const { currentUser, logout } = useAuth();
-	const history = useHistory()
+	const [userName, setUserName] = useState();
+	const history = useHistory();
+
+	if (currentUser) {
+		axios.post('http://localhost:3001/user/get', {
+			id: currentUser.uid,
+		}).then((response) => {
+			if (response.data[0]) {
+				if (response.data[0].User_Role === "Admin") {
+					setUserName(response.data[0].User_First_Name + ' ' + response.data[0].User_Last_Name + ' (ADMIN)');
+				} else {
+					setUserName(response.data[0].User_First_Name + ' ' + response.data[0].User_Last_Name);
+				}
+			} else {
+				logout();
+				history.push("/login");
+			}
+		})
+	}
 
 	// Calls logout function from the authcontext to log the user out and forward them to login screen.
 	async function handleLogout() {
 		try {
-			await logout()
-			history.push("/login")
+			await logout();
+			history.push("/login");
 		} catch {
 			// Error code goes here
 		}
@@ -55,7 +74,7 @@ const Header = () => {
 
 								</li>
 								<li className="nav-item">
-									<p className="nav-link"> {currentUser && currentUser.email}</p>
+									<p className="nav-link"> {currentUser && userName}</p>
 								</li>
 								<li className="nav-item-right">
 									<a className="nav-link" onClick={handleLogout} href="/login">
@@ -72,6 +91,13 @@ const Header = () => {
 									<a className="nav-link-title" href="/">
 										Hot Rides Auto Expo
 									</a>
+								</li>
+
+								<li className="nav-item">
+									<a className="nav-link" href="/Events">
+										Events
+									</a>
+
 								</li>
 
 								<li className="nav-item-right">

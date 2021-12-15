@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 const Donate = () => {
-	const [amount, setAmount] = useState('');
+	const [amount, setAmount] = useState(0);
 	const [eventID, setEventID] = useState(1);
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
@@ -29,6 +29,10 @@ const Donate = () => {
 		history.push('/login');
 	}
 
+	const handleAmountButton = (amount) => {
+		document.getElementById('amount').value = amount;
+	}
+
 	// On Button Click
 	async function submitReview() {
 		setLoading(true)
@@ -49,11 +53,23 @@ const Donate = () => {
 		<div className="form-page">
 			<h1 className="title"> Make a Donation </h1>
 			<ul className="form-style-1">
+				<h1 className="title"> Give Securely </h1>
+				<li>
+					<button onClick={() => handleAmountButton(10)} className="donate-button"> $10 </button>
+					<button onClick={() => handleAmountButton(50)} className="donate-button"> $50 </button>
+					<button onClick={() => handleAmountButton(100)} className="donate-button"> $100 </button>
+				</li>
+				<li>
+					<button onClick={() => handleAmountButton(250)} className="donate-button"> $250 </button>
+					<button onClick={() => handleAmountButton(500)} className="donate-button"> $500 </button>
+					<button onClick={() => handleAmountButton(1000)} className="donate-button"> $1000 </button>
+				</li>
 				<li>
 					<label>
-						Amount
+						Personalize Your Amount
 					</label>
 					<input
+						id="amount"
 						type="text"
 						name="DonationAmount"
 						className="field-long"

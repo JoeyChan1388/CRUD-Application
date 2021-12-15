@@ -14,38 +14,59 @@ const makeid = (length) => {
 	return result;
 }
 
-
 const ParticipantsCreate = () => {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [address, setAddress] = useState('');
-	const [eventid, setEventID] = useState(0);
+	const [eventID, setEventID] = useState(1);
 	const [shirtSize, setShirtSize] = useState('M');
 	const [clubName, setClubName] = useState('');
 	const [vehicleMake, setVehicleMake] = useState('');
 	const [vehicleModel, setVehicleModel] = useState('');
 	const [vehicleYear, setVehicleYear] = useState('');
 	const [eventsList, setEventsList] = useState([]);
+	const [paymentType, setPaymentType] = useState('CASH')
 	const [eventFee, setEventFee] = useState(0);
 
 	const { currentUser } = useAuth();
 	const history = useHistory();
 
-	// Grab events list on page load
-	useEffect(() => {
-		axios.get("http://localhost:3001/Events/get").then((response) => { setEventsList(response.data); })
-	}, [])
+	// Go back if not admin or helper
+	if (currentUser) {
+		axios.post('http://localhost:3001/user/get', {
+			id: currentUser.uid,
+		}).then((response) => {
+			if (response.data[0]) {
+				if (response.data[0].User_Role === "User") {
+					history.goBack();
+				}
+			}
+		})
+	} else {
+		history.goBack();
+	}
 
 	const getEventFromID = (id) => {
 		axios.post("http://localhost:3001/Event/get", {
 			id: id,
 		}).then((response) => {
-			console.log(response)
-			setEventFee(response.data[0].Event_Registration_Fee);
+			setEventFee((response.data[0].Event_Registration_Fee));
 		})
 	}
+
+	useEffect(() => {
+		getEventFromID(eventID)
+		document.getElementById('fee').textContent = ("Registration Fee: " + eventFee);
+	}, [eventID, eventFee])
+
+	// Grab events list on page load
+	useEffect(() => {
+		axios.get("http://localhost:3001/Events/get").then((response) => {
+			setEventsList(response.data)
+		})
+	}, [])
 
 	if (!currentUser) {
 		history.push('/login');
@@ -66,10 +87,11 @@ const ParticipantsCreate = () => {
 				vehicleMake: vehicleMake,
 				vehicleModel: vehicleModel,
 				vehicleYear: vehicleYear,
-				eventid: eventid
+				eventid: eventID,
+				price: eventFee,
+				paymentType: paymentType,
 			})
 			.then((response) => {
-				console.log(response);
 				history.push('/');
 			});
 	};
@@ -231,7 +253,19 @@ const ParticipantsCreate = () => {
 					</select>
 				</li>
 				<li>
-					<p id='fee'> Fee: {eventFee} </p>
+					<label>
+						Payment Type
+					</label>
+					<select id="paymentType"
+						onChange={(e) => {
+							setPaymentType(e.target.value);
+						}}>
+						<option value={"CHECK"}>Check</option>
+						<option value={"CASH"}>Cash</option>
+					</select>
+				</li>
+				<li>
+					<p id='fee'> Registration Fee: {eventFee} </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit">

@@ -28,11 +28,11 @@ const SponsorshipCreate = () => {
 	}
 
 	// Handle Async Change for sponsorshipPackege and price
-	useLayoutEffect(() => {
+	useEffect(() => {
 		GetPackageFromID(sponsorshipPackageID)
 		document.getElementById('price').textContent = ('Price: $' + SponsorshipPackageData.Sponsorship_Package_Price)
 		document.getElementById('info').textContent = (SponsorshipPackageData.Sponsorship_Package_Info)
-	}, [sponsorshipPackageID])
+	}, [sponsorshipPackageID, SponsorshipPackageData.Sponsorship_Package_Price])
 
 	// Grab events and packages list on page load
 	useEffect(() => {
