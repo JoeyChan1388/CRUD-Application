@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
@@ -6,9 +6,8 @@ import axios from 'axios';
 const SponsorshipCreate = () => {
 	const [organization, setOrganization] = useState('')
 	const [eventID, setEventID] = useState(1)
-	const [sponsorshipPackage, setSponsorshipPackage] = useState(1)
-	const [SponsorshipPrice, setSponsorshipPrice] = useState(0)
-	const [error, setError] = useState("")
+	const [sponsorshipPackageID, setSponsorshipPackageID] = useState(1)
+	const [SponsorshipPackageData, setSponsorshipPackageData] = useState([])
 	const [loading, setLoading] = useState(false)
 	const history = useHistory()
 	const { currentUser } = useAuth();
@@ -19,22 +18,21 @@ const SponsorshipCreate = () => {
 		history.push('/login');
 	}
 
-	function GetPriceFromID(id) {
-		let price = 0
-		axios.post("http://localhost:3001/Sponsorshipprice/get", {
+	function GetPackageFromID(id) {
+		axios.post("http://localhost:3001/SponsorshipPackage/get", {
 			id: id,
 		}).then((response) => {
-			price = response.data[0].Sponsorship_Package_Price;
-			setSponsorshipPrice(price)
+			console.log(response.data[0])
+			setSponsorshipPackageData(response.data[0]);
 		})
-		return price;
 	}
 
 	// Handle Async Change for sponsorshipPackege and price
-	useEffect(() => {
-		GetPriceFromID(sponsorshipPackage)
-		document.getElementById('price').textContent = ('Price: $' + SponsorshipPrice)
-	}, [sponsorshipPackage, SponsorshipPrice])
+	useLayoutEffect(() => {
+		GetPackageFromID(sponsorshipPackageID)
+		document.getElementById('price').textContent = ('Price: $' + SponsorshipPackageData.Sponsorship_Package_Price)
+		document.getElementById('info').textContent = (SponsorshipPackageData.Sponsorship_Package_Info)
+	}, [sponsorshipPackageID])
 
 	// Grab events and packages list on page load
 	useEffect(() => {
@@ -45,16 +43,20 @@ const SponsorshipCreate = () => {
 		axios.get("http://localhost:3001/Packages/get").then((response) => {
 			setPackageList(response.data);
 		})
+
+		setSponsorshipPackageID(1);
 	}, [])
 
 	async function submitReview() {
 		setLoading(true)
+
 		axios
 			.post('http://localhost:3001/Sponsorships/insert', {
 				userid: currentUser.uid,
 				eventid: eventID,
 				organization: organization,
-				packageid: sponsorshipPackage
+				packageid: SponsorshipPackageData.Sponsorship_Package_ID,
+				price: SponsorshipPackageData.Sponsorship_Package_Price
 			}).then((response) => {
 				console.log(response)
 			})
@@ -68,7 +70,7 @@ const SponsorshipCreate = () => {
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Organization <span className="required">*</span>
+						Organization
 					</label>
 					<input
 						type="text"
@@ -80,10 +82,10 @@ const SponsorshipCreate = () => {
 				</li>
 				<li>
 					<label>
-						Sponsorship Package <span className="required">*</span>
+						Sponsorship Package
 					</label>
 					<select id="sponsorship_package"
-						onChange={(e) => setSponsorshipPackage(e.target.value)}>
+						onChange={(e) => setSponsorshipPackageID(e.target.value)}>
 						{packageList.map((val, key) => {
 							return (
 								<option value={val.Sponsorship_Package_ID}>{val.Sponsorship_Package}</option>
@@ -93,7 +95,7 @@ const SponsorshipCreate = () => {
 				</li>
 				<li>
 					<label>
-						Event <span className="required">*</span>
+						Event
 					</label>
 					<select id="Event"
 						onChange={(e) => setEventID(e.target.value)}>
@@ -105,12 +107,19 @@ const SponsorshipCreate = () => {
 					</select>
 				</li>
 				<li>
-					<p id="price"> Price: {SponsorshipPrice} </p>
+					<p id="price"> Price: 0 </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit" disabled={loading}>
 						Submit
 					</button>
+				</li>
+			</ul>
+
+			<ul className="form-style-1">
+				<li>
+					<h1> Sponsorship Info</h1>
+					<p id="info"> Select A Package </p>
 				</li>
 			</ul>
 		</div>

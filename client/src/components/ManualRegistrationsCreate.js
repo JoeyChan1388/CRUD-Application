@@ -1,35 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const makeid = (length) => {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * 
- charactersLength));
-   }
-   return result;
+	var result = '';
+	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = characters.length;
+	for (var i = 0; i < length; i++) {
+		result += characters.charAt(Math.floor(Math.random() *
+			charactersLength));
+	}
+	return result;
 }
 
 
 const ParticipantsCreate = () => {
-	const [ firstName, setFirstName ] = useState('');
-	const [ lastName, setLastName ] = useState('');
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
-	const [ phoneNumber, setPhoneNumber] = useState('');
+	const [phoneNumber, setPhoneNumber] = useState('');
 	const [address, setAddress] = useState('');
 	const [eventid, setEventID] = useState(0);
-	const [ shirtSize, setShirtSize ] = useState('M');
-	const [ clubName, setClubName ] = useState('');
-	const [ vehicleMake, setVehicleMake ] = useState('');
-	const [ vehicleModel, setVehicleModel ] = useState('');
-	const [ vehicleYear, setVehicleYear ] = useState('');
+	const [shirtSize, setShirtSize] = useState('M');
+	const [clubName, setClubName] = useState('');
+	const [vehicleMake, setVehicleMake] = useState('');
+	const [vehicleModel, setVehicleModel] = useState('');
+	const [vehicleYear, setVehicleYear] = useState('');
+	const [eventsList, setEventsList] = useState([]);
+	const [eventFee, setEventFee] = useState(0);
 
 	const { currentUser } = useAuth();
 	const history = useHistory();
+
+	// Grab events list on page load
+	useEffect(() => {
+		axios.get("http://localhost:3001/Events/get").then((response) => { setEventsList(response.data); })
+	}, [])
+
+	const getEventFromID = (id) => {
+		axios.post("http://localhost:3001/Event/get", {
+			id: id,
+		}).then((response) => {
+			console.log(response)
+			setEventFee(response.data[0].Event_Registration_Fee);
+		})
+	}
 
 	if (!currentUser) {
 		history.push('/login');
@@ -38,7 +54,7 @@ const ParticipantsCreate = () => {
 	// Submit POST Request to back end at this URL
 	const submitReview = () => {
 		axios
-			.post('http://localhost:3001/registrations/insert', {
+			.post('http://localhost:3001/manualregistrations/insert', {
 				userid: makeid(30),
 				firstName: firstName,
 				lastName: lastName,
@@ -54,6 +70,7 @@ const ParticipantsCreate = () => {
 			})
 			.then((response) => {
 				console.log(response);
+				history.push('/');
 			});
 	};
 
@@ -61,9 +78,9 @@ const ParticipantsCreate = () => {
 		<div className="form-page">
 			<h1 className="title"> Manually Register a Participant </h1>
 			<ul className="form-style-1">
-			<li>
-				<label>
-						Full Name <span className="required">*</span>
+				<li>
+					<label>
+						Full Name
 					</label>
 					<input
 						type="text"
@@ -88,7 +105,7 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Phone Number <span className="required">*</span>
+						Phone Number
 					</label>
 					<input
 						type="text"
@@ -103,7 +120,7 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Address <span className="required">*</span>
+						Address
 					</label>
 					<input
 						type="text"
@@ -117,22 +134,22 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Email <span className="required">*</span>
+						Email
 					</label>
 					<input
 						type="text"
-						name="VehicleMake"
+						name="Email"
 						className="field-long"
 						placeholder="jdoe@dcmail.ca"
 						onChange={(e) => {
 							setEmail(e.target.value);
 						}}
 						required
-						/>
+					/>
 				</li>
 				<li>
 					<label>
-						Shirt Size <span className="required">*</span>
+						Shirt Size
 					</label>
 					<input
 						type="text"
@@ -146,7 +163,7 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Club <span className="required">*</span>
+						Club
 					</label>
 					<input
 						type="text"
@@ -160,7 +177,7 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Car Make / Model <span className="required">*</span>
+						Car Make / Model
 					</label>
 					<input
 						type="text"
@@ -185,7 +202,7 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Year <span className="required">*</span>
+						Year
 					</label>
 					<input
 						type="number"
@@ -200,18 +217,21 @@ const ParticipantsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Event ID <span className="required">*</span>
+						Event
 					</label>
-					<input
-						type="number"
-						name="EventID"
-						className="field-divided"
-						placeholder="ID"
+					<select id="Event"
 						onChange={(e) => {
 							setEventID(e.target.value);
-						}}
-						required
-					/>
+						}}>
+						{eventsList.map((val, key) => {
+							return (
+								<option value={val.Event_ID}>{val.Event_Name}</option>
+							)
+						})}
+					</select>
+				</li>
+				<li>
+					<p id='fee'> Fee: {eventFee} </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit">

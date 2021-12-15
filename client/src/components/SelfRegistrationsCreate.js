@@ -5,22 +5,36 @@ import { useAuth } from '../contexts/AuthContext';
 
 const SelfRegistrationsCreate = () => {
 	const [eventsList, setEventsList] = useState([])
-	const [ shirtSize, setShirtSize ] = useState('M');
-	const [ clubName, setClubName ] = useState('');
-	const [ vehicleMake, setVehicleMake ] = useState('');
-	const [ vehicleModel, setVehicleModel ] = useState('');
-	const [ vehicleYear, setVehicleYear ] = useState('');
-	const [ eventID, setEventID ] = useState(0);
-
+	const [shirtSize, setShirtSize] = useState('M');
+	const [clubName, setClubName] = useState('');
+	const [vehicleMake, setVehicleMake] = useState('');
+	const [vehicleModel, setVehicleModel] = useState('');
+	const [vehicleYear, setVehicleYear] = useState('');
+	const [eventID, setEventID] = useState(1);
+	const [eventFee, setEventFee] = useState(0);
 	const { currentUser } = useAuth();
 	const history = useHistory();
+
+	const getEventFromID = (id) => {
+		axios.post("http://localhost:3001/Event/get", {
+			id: id,
+		}).then((response) => {
+			console.log(response)
+			setEventFee(response.data[0].Event_Registration_Fee);
+		})
+	}
 
 	// Grab events list on page load
 	useEffect(() => {
 		axios.get("http://localhost:3001/Events/get").then((response) => {
-		setEventsList(response.data);
+			setEventsList(response.data)
 		})
 	}, [])
+
+	useEffect(() => {
+		getEventFromID(eventID)
+		document.getElementById('fee').textContent = ("Price: " + eventFee)
+	}, [eventID])
 
 	if (!currentUser) {
 		history.push('/login');
@@ -36,10 +50,12 @@ const SelfRegistrationsCreate = () => {
 				eventid: eventID,
 				vehicleMake: vehicleMake,
 				vehicleModel: vehicleModel,
-				vehicleYear: vehicleYear
+				vehicleYear: vehicleYear,
+				price: eventFee
 			})
 			.then((response) => {
 				console.log(response);
+				history.push('/');
 			});
 	};
 
@@ -49,7 +65,7 @@ const SelfRegistrationsCreate = () => {
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Shirt Size <span className="required">*</span>
+						Shirt Size
 					</label>
 					<input
 						type="text"
@@ -63,7 +79,7 @@ const SelfRegistrationsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Club <span className="required">*</span>
+						Club
 					</label>
 					<input
 						type="text"
@@ -77,7 +93,7 @@ const SelfRegistrationsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Car Make / Model <span className="required">*</span>
+						Car Make / Model
 					</label>
 					<input
 						type="text"
@@ -102,7 +118,7 @@ const SelfRegistrationsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Year <span className="required">*</span>
+						Year
 					</label>
 					<input
 						type="number"
@@ -117,19 +133,23 @@ const SelfRegistrationsCreate = () => {
 				</li>
 				<li>
 					<label>
-						Event <span className="required">*</span>
+						Event
 					</label>
-					<select id="Event" 
-							onChange={(e) => {
-								setEventID(e.target.value); 
-								console.log(eventID)
-							}}>
-					{eventsList.map((val, key) => {
-						return(
-							<option value={val.Event_ID}>{val.Event_Name}</option>
-						)
-					})}
+					<select
+						id="Event"
+						onChange={(e) => {
+							setEventID(e.target.value);
+							console.log(eventID)
+						}}>
+						{eventsList.map((val, key) => {
+							return (
+								<option value={val.Event_ID}>{val.Event_Name}</option>
+							)
+						})}
 					</select>
+				</li>
+				<li>
+					<p id='fee'> Fee: {eventFee} </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit">

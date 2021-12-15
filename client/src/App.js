@@ -13,6 +13,9 @@ import SponsorshipCreate from './components/SponsorshipCreate';
 import EventsRead from './components/EventsRead'
 import { AuthProvider } from './contexts/AuthContext';
 import EventsCreate from './components/EventsCreate';
+import DonationsReciept from './components/DonationsReciept';
+import EventsSummary from './components/EventsSummary';
+import EventView from './components/EventView';
 
 function App() {
 	return (
@@ -28,10 +31,12 @@ function App() {
 						<Route path="/Registrations/Manual" component={ManualRegistrationsCreate} />
 						<Route path="/Registrations/Self" component={SelfRegistrationsCreate} />
 						<Route path="/Donations/Create" component={Donate} />
-						<Route path="/Donations/Reciept" component={DonationsReciept} />
+						<Route path="/Donations/Reciept/:id" children={<DonationsReciept />} />
+						<Route path="/Events/:id" children={<EventView />} />
 						<Route exact path="/Sponsorships/Create" component={SponsorshipCreate} />
 						<Route exact path="/Events" component={EventsRead} />
 						<Route exact path="/Events/Create" component={EventsCreate} />
+						<Route exact path="/Summary/Events" component={EventsSummary} />
 					</Switch>
 				</div>
 			</Router>

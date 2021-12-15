@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {useHistory} from 'react-router-dom';
-import {useAuth} from '../contexts/AuthContext'
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'
 
 const Login = () => {
 	const [email, setEmail] = useState('')
@@ -17,11 +17,11 @@ const Login = () => {
 			setLoading(true)
 			await login(email, password)
 			history.push("/")
-		  } catch {
+		} catch {
 			setError("Failed to log in")
-		  }
-	  
-		  setLoading(false)
+		}
+
+		setLoading(false)
 	};
 
 	return (
@@ -30,7 +30,7 @@ const Login = () => {
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Email <span className="required">*</span>
+						Email
 					</label>
 					<input
 						type="email"
@@ -44,7 +44,7 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Password <span className="required">*</span>
+						Password
 					</label>
 					<input
 						type="password"
@@ -57,7 +57,7 @@ const Login = () => {
 					/>
 				</li>
 				<li>
-					<p> {error} </p>		
+					<p> {error} </p>
 				</li>
 				<li>
 					<button onClick={submitReview} type="submit" disabled={loading}>

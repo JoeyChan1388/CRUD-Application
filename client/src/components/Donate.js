@@ -4,18 +4,24 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 
 const Donate = () => {
-	const [amount, setAmount] = useState('')
-	const [eventID, setEventID] = useState(1)
-	const [error, setError] = useState("")
-	const [loading, setLoading] = useState(false)
-	const history = useHistory()
+	const [amount, setAmount] = useState('');
+	const [eventID, setEventID] = useState(1);
+	const [error, setError] = useState("");
+	const [loading, setLoading] = useState(false);
+	const history = useHistory();
 	const { currentUser } = useAuth();
 	const [eventsList, setEventsList] = useState([]);
+	const [charitiesList, setCharitiesList] = useState([]);
+	const [charityID, setCharityID] = useState([]);
 
 	// Grab events list on page load
 	useEffect(() => {
 		axios.get("http://localhost:3001/Events/get").then((response) => {
 			setEventsList(response.data);
+		})
+
+		axios.get("http://localhost:3001/Charities/get").then((response) => {
+			setCharitiesList(response.data);
 		})
 	}, [])
 
@@ -30,9 +36,10 @@ const Donate = () => {
 			.post('http://localhost:3001/Donations/insert', {
 				userid: currentUser.uid,
 				eventid: eventID,
-				amount: amount
+				amount: amount,
+				charityid: charityID
 			}).then((response) => {
-				console.log(response)
+				history.push('/Donations/Reciept/' + response.data.insertId);
 			})
 
 		setLoading(false)
@@ -44,7 +51,7 @@ const Donate = () => {
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Amount <span className="required">*</span>
+						Amount
 					</label>
 					<input
 						type="text"
@@ -58,13 +65,21 @@ const Donate = () => {
 				</li>
 				<li>
 					<label>
-						Event <span className="required">*</span>
+						Event / Charity
 					</label>
 					<select id="Event"
 						onChange={(e) => setEventID(e.target.value)}>
 						{eventsList.map((val, key) => {
 							return (
 								<option value={val.Event_ID}>{val.Event_Name}</option>
+							)
+						})}
+					</select>
+					<select id="Charity"
+						onChange={(e) => setCharityID(e.target.value)}>
+						{charitiesList.map((val, key) => {
+							return (
+								<option value={val.Charity_ID}>{val.Charity_Name}</option>
 							)
 						})}
 					</select>

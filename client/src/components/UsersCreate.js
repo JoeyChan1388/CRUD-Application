@@ -15,10 +15,10 @@ const Login = () => {
 
 	// Signup
 	function submitReview() {
-		try{
+		try {
 			setLoading(true);
 			signup(email, password);
-		} 
+		}
 		catch {
 			setError("Failed to make an account!");
 		}
@@ -45,7 +45,7 @@ const Login = () => {
 			<ul className="form-style-1">
 				<li>
 					<label>
-						Full Name <span className="required">*</span>
+						Full Name
 					</label>
 					<input
 						type="text"
@@ -70,7 +70,7 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Phone Number <span className="required">*</span>
+						Phone Number
 					</label>
 					<input
 						type="text"
@@ -85,7 +85,7 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Password <span className="required">*</span>
+						Password
 					</label>
 					<input
 						type="password"
@@ -99,7 +99,7 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Address <span className="required">*</span>
+						Address
 					</label>
 					<input
 						type="text"
@@ -113,7 +113,7 @@ const Login = () => {
 				</li>
 				<li>
 					<label>
-						Email <span className="required">*</span>
+						Email
 					</label>
 					<input
 						type="text"
@@ -124,7 +124,7 @@ const Login = () => {
 							setEmail(e.target.value);
 						}}
 						required
-						/>
+					/>
 				</li>
 				<li>
 					<button onClick={submitReview} disabled={loading} type="submit">
