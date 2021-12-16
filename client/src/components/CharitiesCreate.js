@@ -9,10 +9,12 @@ const CharitiesCreate = () => {
 	const [name, setName] = useState('');
 	const [loading, setLoading] = useState(false);
 
+	// If signed out redirect to login
 	if (!currentUser) {
 		history.push('/login');
 	}
 
+	// When submit button is clicked
 	async function submitReview() {
 		setLoading(true)
 		axios
@@ -24,6 +26,7 @@ const CharitiesCreate = () => {
 		setLoading(false)
 	}
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Add a Charity </h1>

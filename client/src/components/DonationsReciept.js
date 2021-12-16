@@ -9,7 +9,7 @@ const DonationsReciept = () => {
     const [eventData, setEventData] = useState([]);
     const [transactionData, setTransactionData] = useState([]);
 
-    // Grab events list on page load
+    // Grab donation using specified id
     useEffect(() => {
         axios.post("http://localhost:3001/donation/get", { id: id }).then((response) => {
             console.log(response);
@@ -19,12 +19,13 @@ const DonationsReciept = () => {
         })
     }, [id])
 
+    // Show print screen
     const HandleClickPrint = () => {
         window.print();
         return false;
     }
 
-    console.log("Showing Reciept for Donation ID:" + id)
+    // Return Page Contents
     return (
         <div className="home">
             <ul className="form-style-1">

@@ -15,6 +15,8 @@ const EventsCreate = () => {
 	const [organizerFirstName, setOrganizerFirstName] = useState('FName');
 	const [organizerLastName, setOrganizerLastName] = useState('LName');
 
+	// If not logged in redirect to login screen, if logged in,
+	// use current user's credentials for creating the event.
 	if (!currentUser) {
 		history.push('/login');
 	} else {
@@ -26,6 +28,7 @@ const EventsCreate = () => {
 		})
 	}
 
+	// When submit button is clicked send a post request to add an event
 	async function submitReview() {
 		setLoading(true)
 		axios
@@ -42,6 +45,7 @@ const EventsCreate = () => {
 		setLoading(false)
 	}
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Start an Event </h1>

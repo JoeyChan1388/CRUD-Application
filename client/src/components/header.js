@@ -9,6 +9,7 @@ const Header = () => {
 	const [userRole, setUserRole] = useState('');
 	const history = useHistory();
 
+	// Change name in header and check if login
 	if (currentUser) {
 		axios.post('http://localhost:3001/user/get', {
 			id: currentUser.uid,
@@ -37,6 +38,7 @@ const Header = () => {
 		}
 	}
 
+	// Return Page Contents
 	return (
 		<header>
 			<nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">

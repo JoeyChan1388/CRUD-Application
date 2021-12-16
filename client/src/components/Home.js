@@ -1,6 +1,7 @@
 import React from 'react';
 
 const home = () => {
+	// Return Page Contents
 	return (
 		<div className="home">
 			<h3 className="home"> HUNDREDS OF COOL CARS </h3>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -15,6 +15,7 @@ const SelfRegistrationsCreate = () => {
 	const { currentUser } = useAuth();
 	const history = useHistory();
 
+	// Get event data from backend using an ID
 	const getEventFromID = (id) => {
 		axios.post("http://localhost:3001/Event/get", {
 			id: id,
@@ -23,6 +24,7 @@ const SelfRegistrationsCreate = () => {
 		})
 	}
 
+	// Update event data when a new event is selected
 	useEffect(() => {
 		getEventFromID(eventID)
 		document.getElementById('fee').textContent = ("Registration Fee: " + eventFee);
@@ -35,6 +37,7 @@ const SelfRegistrationsCreate = () => {
 		})
 	}, [])
 
+	// Redirect if not logged in
 	if (!currentUser) {
 		history.push('/login');
 	}
@@ -58,6 +61,7 @@ const SelfRegistrationsCreate = () => {
 			});
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Register For an Event! </h1>

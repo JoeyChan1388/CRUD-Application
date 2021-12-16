@@ -10,7 +10,7 @@ const Login = () => {
 	const [loading, setLoading] = useState(false)
 	const history = useHistory()
 
-	// On Button Click
+	// On Submit Button Click attempt login
 	async function submitReview() {
 		try {
 			setError("")
@@ -24,6 +24,7 @@ const Login = () => {
 		setLoading(false)
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> User Login </h1>

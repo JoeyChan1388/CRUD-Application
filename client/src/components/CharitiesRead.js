@@ -6,17 +6,19 @@ const CharitiesRead = () => {
 	const [CharitiesList, setCharitiesList] = useState([]);
 	const history = useHistory();
 
-	// Grab events list on page load
+	// Grab charities list on page load
 	useEffect(() => {
 		axios.get("http://localhost:3001/Charities/get").then((response) => {
 			setCharitiesList(response.data);
 		})
 	}, [])
 
+	// Redirect to charity addition screen
 	const handleSubmit = () => {
 		history.push("/Charities/Create")
 	}
 
+	// Return Page Contents
 	return (
 		<div className="home">
 			<h3 className="home"> Charities </h3>

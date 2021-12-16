@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
+// For making a UID to go along with each manually created user
 const makeid = (length) => {
 	var result = '';
 	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -48,6 +49,7 @@ const ParticipantsCreate = () => {
 		history.goBack();
 	}
 
+	// Get registration fee from selected event
 	const getEventFromID = (id) => {
 		axios.post("http://localhost:3001/Event/get", {
 			id: id,
@@ -56,6 +58,7 @@ const ParticipantsCreate = () => {
 		})
 	}
 
+	// Update event data when a new option is selected
 	useEffect(() => {
 		getEventFromID(eventID)
 		document.getElementById('fee').textContent = ("Registration Fee: " + eventFee);
@@ -67,10 +70,6 @@ const ParticipantsCreate = () => {
 			setEventsList(response.data)
 		})
 	}, [])
-
-	if (!currentUser) {
-		history.push('/login');
-	}
 
 	// Submit POST Request to back end at this URL
 	const submitReview = () => {
@@ -96,6 +95,7 @@ const ParticipantsCreate = () => {
 			});
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Manually Register a Participant </h1>

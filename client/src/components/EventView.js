@@ -30,7 +30,7 @@ const EventView = () => {
         history.goBack();
     }
 
-    // Grab events list on page load
+    // Grab financial data for event on page load
     useEffect(() => {
         axios.post("http://localhost:3001/EventInfo/get", { id: id }).then((response) => {
             setEventData(response.data.eventData[0]);
@@ -42,6 +42,7 @@ const EventView = () => {
         axios.post("http://localhost:3001/EventRevenue/get", { id: id }).then((response) => {
             console.log(response.data)
 
+            // Add totals together for each amount
             var total = 0;
             for (var a in response.data.registrationsAmount) {
                 total += response.data.registrationsAmount[a].Transaction_Amount;
@@ -62,6 +63,7 @@ const EventView = () => {
         });
     }, [id])
 
+    // Return Page Contents
     return (
         <div className="home">
             <ul className="form-style-1">

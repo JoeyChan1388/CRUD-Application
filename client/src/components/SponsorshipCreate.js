@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
@@ -15,10 +15,12 @@ const SponsorshipCreate = () => {
 	const [packageList, setPackageList] = useState([]);
 	const [sponsorshipInfo, setSponsorshipInfo] = useState('');
 
+	// Redirect user if not logged in
 	if (!currentUser) {
 		history.push('/login');
 	}
 
+	// Get sponsorship package data from an ID
 	function GetPackageFromID(id) {
 		axios.post("http://localhost:3001/SponsorshipPackage/get", {
 			id: id,
@@ -48,6 +50,7 @@ const SponsorshipCreate = () => {
 		setSponsorshipPackageID(1);
 	}, [])
 
+	// When the submit button is clicked
 	async function submitReview() {
 		setLoading(true)
 
@@ -65,6 +68,7 @@ const SponsorshipCreate = () => {
 		setLoading(false)
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Sponsor an Event </h1>

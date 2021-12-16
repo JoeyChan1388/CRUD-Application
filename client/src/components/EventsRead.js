@@ -13,10 +13,12 @@ const EventsRead = () => {
 		})
 	}, [])
 
+	// Redirect to event creation screen when the button is clicked
 	const handleSubmit = () => {
 		history.push("/Events/Create")
 	}
 
+	// Return Page Contents
 	return (
 		<div className="home">
 			<h3 className="home"> Events </h3>

@@ -15,6 +15,8 @@ const Login = () => {
 	const [loading, setLoading] = useState('')
 	const history = useHistory();
 
+	// When a user is specified (submitted) add its corresponding data
+	// to the DB for later use.
 	useEffect(() => {
 		try {
 			axios.post('http://localhost:3001/users/insert', {
@@ -36,7 +38,7 @@ const Login = () => {
 		}
 	}, [currentUser])
 
-	// Signup
+	// Signup button click
 	async function submitReview() {
 		try {
 			setLoading(true);
@@ -49,6 +51,7 @@ const Login = () => {
 		setLoading(false)
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Sign up Here! </h1>

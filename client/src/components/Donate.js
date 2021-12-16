@@ -14,7 +14,7 @@ const Donate = () => {
 	const [charitiesList, setCharitiesList] = useState([]);
 	const [charityID, setCharityID] = useState([]);
 
-	// Grab events list on page load
+	// Grab events and charities lists on page load for selecting
 	useEffect(() => {
 		axios.get("http://localhost:3001/Events/get").then((response) => {
 			setEventsList(response.data);
@@ -25,15 +25,17 @@ const Donate = () => {
 		})
 	}, [])
 
+	// Redirect user if not logged in
 	if (!currentUser) {
 		history.push('/login');
 	}
 
+	// Change amount specified when an amount button is clicked
 	const handleAmountButton = (amount) => {
 		document.getElementById('amount').value = amount;
 	}
 
-	// On Button Click
+	// On Submit Button Click
 	async function submitReview() {
 		setLoading(true)
 		axios
@@ -49,6 +51,7 @@ const Donate = () => {
 		setLoading(false)
 	};
 
+	// Return Page Contents
 	return (
 		<div className="form-page">
 			<h1 className="title"> Make a Donation </h1>
