@@ -16,6 +16,8 @@ import EventsCreate from './components/EventsCreate';
 import DonationsReciept from './components/DonationsReciept';
 import EventsSummary from './components/EventsSummary';
 import EventView from './components/EventView';
+import CharitiesCreate from './components/CharitiesCreate';
+import CharitiesRead from './components/CharitiesRead';
 
 function App() {
 	return (
@@ -37,6 +39,8 @@ function App() {
 						<Route exact path="/Sponsorships/Create" component={SponsorshipCreate} />
 						<Route exact path="/Events" component={EventsRead} />
 						<Route exact path="/Summary/Events" component={EventsSummary} />
+						<Route exact path="/Charities" component={CharitiesRead} />
+						<Route exact path="/Charities/Create" component={CharitiesCreate} />
 					</Switch>
 				</div>
 			</Router>

@@ -6,6 +6,7 @@ import axios from 'axios'
 const Header = () => {
 	const { currentUser, logout } = useAuth();
 	const [userName, setUserName] = useState();
+	const [userRole, setUserRole] = useState('');
 	const history = useHistory();
 
 	if (currentUser) {
@@ -13,10 +14,11 @@ const Header = () => {
 			id: currentUser.uid,
 		}).then((response) => {
 			if (response.data[0]) {
+				setUserRole(response.data[0].User_Role)
 				if (response.data[0].User_Role === "Admin") {
 					setUserName(response.data[0].User_First_Name + ' ' + response.data[0].User_Last_Name + ' (ADMIN)');
 				} else {
-					setUserName(response.data[0].User_First_Name + ' ' + response.data[0].User_Last_Name);
+					setUserName(response.data[0].User_First_Name + ' ' + response.data[0].User_Last_Name + ' ' + userRole);
 				}
 			} else {
 				logout();
@@ -39,7 +41,7 @@ const Header = () => {
 		<header>
 			<nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 				<div className="container-fluid">
-					{currentUser &&
+					{userRole === 'Admin' &&
 						<div>
 							<ul className="navbar-nav me-auto mb-2 mb-md-0">
 								<li className="nav-item">
@@ -71,7 +73,96 @@ const Header = () => {
 									<a className="nav-link" href="/Events">
 										Events
 									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Charities">
+										Charities
+									</a>
+								</li>
+								<li className="nav-item">
+									<p className="nav-link"> {currentUser && userName}</p>
+								</li>
+								<li className="nav-item-right">
+									<a className="nav-link" onClick={handleLogout} href="/login">
+										Logout
+									</a>
+								</li>
+							</ul>
+						</div>}
 
+					{userRole === 'User' &&
+						<div>
+							<ul className="navbar-nav me-auto mb-2 mb-md-0">
+								<li className="nav-item">
+									<a className="nav-link-title" href="/">
+										Hot Rides Auto Expo
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Registrations/Self">
+										Self-Registration
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Donations/Create">
+										Donations
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Sponsorships/Create">
+										Sponsorships
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Events">
+										Events
+									</a>
+								</li>
+								<li className="nav-item">
+									<p className="nav-link"> {currentUser && userName}</p>
+								</li>
+								<li className="nav-item-right">
+									<a className="nav-link" onClick={handleLogout} href="/login">
+										Logout
+									</a>
+								</li>
+							</ul>
+						</div>}
+
+					{userRole === 'Helper' &&
+						<div>
+							<ul className="navbar-nav me-auto mb-2 mb-md-0">
+								<li className="nav-item">
+									<a className="nav-link-title" href="/">
+										Hot Rides Auto Expo
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Registrations/Self">
+										Self-Registration
+									</a>
+								</li>
+
+								<li className="nav-item">
+									<a className="nav-link" href="/Registrations/Manual">
+										Manual-Registration
+									</a>
+								</li>
+
+								<li className="nav-item">
+									<a className="nav-link" href="/Donations/Create">
+										Donations
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Sponsorships/Create">
+										Sponsorships
+									</a>
+								</li>
+								<li className="nav-item">
+									<a className="nav-link" href="/Events">
+										Events
+									</a>
 								</li>
 								<li className="nav-item">
 									<p className="nav-link"> {currentUser && userName}</p>

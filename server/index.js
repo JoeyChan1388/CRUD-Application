@@ -369,6 +369,20 @@ app.post('/manualregistrations/insert', (req, res) => {
 	});
 });
 
+app.post('/Charities/insert', (req, res) => {
+	const name = req.body.charityName;
+
+	const sqlInsertCharity = 'INSERT INTO charities(charity_name) VALUES(?);';
+
+	dbPool.query(sqlInsertCharity, [name], (err, result) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log('Success');
+		}
+	});
+})
+
 // When someone submits a donation form
 app.post('/Donations/insert', (req, res) => {
 	const eventid = req.body.eventid;
@@ -402,15 +416,16 @@ app.post('/Sponsorships/insert', (req, res) => {
 	const sponsorid = req.body.userid;
 	const sponsorshipPackageID = req.body.packageid;
 	const paymentAmount = req.body.price;
+	const sponsorshipInfo = req.body.info;
 
 	const sqlInsertSponsorship =
-		'INSERT INTO sponsorships(sponsorship_organization, sponsorship_event_id, sponsorship_sponsor_id, sponsorship_package_id, sponsorship_transaction_id) VALUES(?,?,?,?,?);';
+		'INSERT INTO sponsorships(sponsorship_organization, sponsorship_event_id, sponsorship_sponsor_id, sponsorship_package_id, sponsorship_transaction_id, sponsorship_details) VALUES(?,?,?,?,?,?);';
 
 	dbPool.query(sqlInsertTransaction, [paymentAmount, 'ONLINE'], (err, result) => {
 		if (err) {
 			console.log(err);
 		} else {
-			dbPool.query(sqlInsertSponsorship, [organization, eventid, sponsorid, sponsorshipPackageID, result.insertId], (err2, result2) => {
+			dbPool.query(sqlInsertSponsorship, [organization, eventid, sponsorid, sponsorshipPackageID, result.insertId, sponsorshipInfo], (err2, result2) => {
 				if (err2) {
 					console.log(err2);
 				} else {

@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext'
 
-
 const EventView = () => {
     const { id } = useParams();
     const [eventData, setEventData] = useState([]);

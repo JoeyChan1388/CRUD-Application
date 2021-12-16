@@ -11658,6 +11658,19 @@ textarea.form-control-lg {
   border: none;
 }
 
+.form-style-1-empty{
+  margin: 10px auto;
+  width: 200px;
+  padding: 10px 12px 10px 20px;
+  font: 13px "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  background-color: lightgray;
+  border-radius: 22px;
+  border: none;
+  height: 96%;
+  list-style: none;
+  margin-left: 1%;
+}
+
 .form-style-1 li {
   padding: 0;
   display: block;
@@ -11751,6 +11764,13 @@ textarea.form-control-lg {
   margin-right: 1%;
 }
 
+.form-style-1 textarea {
+  background-color: rgb(180, 180, 180);
+  
+  resize: none;
+
+}
+
 .form input {
   width: 500px;
   height: 25px;
@@ -11818,3 +11838,11 @@ button.donate-button{
   width: 30%;
   margin-right: 3.3%;
 }
+
+ul.two-columns{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  list-style-type: none;
+}
+
