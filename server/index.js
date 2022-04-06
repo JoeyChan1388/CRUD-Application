@@ -10,14 +10,14 @@ const dbConnection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
 	password: 'timmycat1388',
-	database: 'crud_db'
+	database: 'sys'
 });
 
 const dbPool = mysql.createPool({
 	host: 'localhost',
 	user: 'root',
 	password: 'timmycat1388',
-	database: 'crud_db'
+	database: 'sys'
 });
 
 // Middleware
